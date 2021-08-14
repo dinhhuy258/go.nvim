@@ -1,6 +1,7 @@
 local M = {}
 
 local installation_path = vim.fn.stdpath "data" .. "/dapinstall/"
+local dbg_path = installation_path .. "go_dbg/"
 
 local dap_installer = {
   install = [[
@@ -11,15 +12,12 @@ local dap_installer = {
     sudo npm install
 		sudo npm run compile
 	]],
-  uninstall = "simple",
 }
 
 function M.dap_install()
   if vim.fn.confirm("Do you want to install the go debugger?", "&Yes\n&Cancel") ~= 1 then
     return
   end
-
-  local dbg_path = installation_path .. "go_dbg/"
 
   if vim.fn.isdirectory("" .. dbg_path .. "") == 1 then
     vim.fn.delete("" .. dbg_path .. "", "rf")
@@ -43,6 +41,19 @@ function M.dap_install()
 
   vim.o.shell = shell
   vim.cmd "startinsert"
+end
+
+function M.dap_uninstall()
+  if vim.fn.isdirectory("" .. dbg_path .. "") ~= 1 then
+    return
+  end
+
+  if vim.fn.confirm("Do you want to uninstall the go debugger?", "&Yes\n&Cancel") ~= 1 then
+    return
+  end
+
+  vim.fn.delete("" .. dbg_path .. "", "rf")
+  vim.notify "Successfully uninstalled the go debugger!"
 end
 
 return M

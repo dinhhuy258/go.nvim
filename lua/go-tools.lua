@@ -10,6 +10,7 @@ function M.setup()
   vim.cmd [[command! GoAddTests lua require("go-tools.tests").add_tests()]]
 
   vim.cmd [[command! GoDapInstall lua require("go-tools.dap").dap_install()]]
+  vim.cmd [[command! GoDapUninstall lua require("go-tools.dap").dap_uninstall()]]
 end
 
 return M
