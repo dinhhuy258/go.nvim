@@ -1,7 +1,7 @@
 local M = {}
 
 local installation_path = vim.fn.stdpath "data" .. "/dapinstall/"
-local dbg_path = installation_path .. "go_dbg/"
+local dbg_path = installation_path .. "go/"
 
 local dap_installer = {
   install = [[
@@ -12,6 +12,33 @@ local dap_installer = {
     sudo npm install
 		sudo npm run compile
 	]],
+}
+
+local dap_config = {
+  adapters = {
+    type = "executable",
+    command = "node",
+    args = { dbg_path .. "vscode-go/dist/debugAdapter.js" },
+  },
+  configurations = {
+    {
+      type = "go",
+      name = "Debug",
+      request = "launch",
+      showLog = false,
+      program = "${file}",
+      dlvToolPath = vim.fn.exepath "dlv",
+    },
+    {
+      type = "go",
+      name = "Debug test",
+      request = "launch",
+      showLog = false,
+      mode = "test",
+      program = "${file}",
+      dlvToolPath = vim.fn.exepath "dlv",
+    },
+  },
 }
 
 function M.dap_install()
