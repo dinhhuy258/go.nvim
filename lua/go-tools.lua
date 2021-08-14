@@ -8,6 +8,8 @@ function M.setup()
   vim.cmd [[command! GoTest lua require("go-tools.tests").run_test()]]
   vim.cmd [[command! GoAddTest lua require("go-tools.tests").add_test()]]
   vim.cmd [[command! GoAddTests lua require("go-tools.tests").add_tests()]]
+
+  vim.cmd [[command! GoDapInstall lua require("go-tools.dap").dap_install()]]
 end
 
 return M
