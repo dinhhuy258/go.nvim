@@ -13,19 +13,32 @@ local function get_node_at_cursor()
   return root:named_descendant_for_range(cursor_range[1], cursor_range[2], cursor_range[1], cursor_range[2])
 end
 
-function M.get_current_struct()
+local function get_current_node(type)
   local current_node = get_node_at_cursor()
 
   while current_node do
-    if current_node:type() == "struct_type" then
-      current_node = current_node:parent()
+    if current_node:type() == type then
       break
     end
     current_node = current_node:parent()
   end
 
+  return current_node
+end
+
+function M.get_current_struct()
+  local current_node = get_current_node "struct_type"
+
   if current_node then
-    return vim.trim(ts_utils.get_node_text(current_node)[1]):gmatch "%w+"()
+    return vim.trim(ts_utils.get_node_text(current_node:parent())[1]):gmatch "%w+"()
+  end
+end
+
+function M.get_current_function()
+  local current_node = get_current_node "function_declaration"
+
+  if current_node then
+    return vim.trim(ts_utils.get_node_text(current_node)[1]):gsub("func ", ""):gmatch "%w+"()
   end
 end
 
