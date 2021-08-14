@@ -10,7 +10,7 @@ local function run_gotests(cmd)
       vim.notify "Unit tests was generated"
     end,
     on_stderr = function(_, _, _)
-      vim.notify "Failed to generate unit test"
+      vim.notify "Failed to generate unit tests"
     end,
   })
 end
@@ -24,6 +24,13 @@ function M.add_test()
 
   local fpath = vim.fn.expand "%"
   local cmd = { gotests, "-w", "-only", function_name, fpath }
+
+  run_gotests(cmd)
+end
+
+function M.add_tests()
+  local fpath = vim.fn.expand "%"
+  local cmd = { gotests, "-all", "-w", fpath }
 
   run_gotests(cmd)
 end

@@ -47,7 +47,7 @@ function M.get_current_function()
   end
 
   local method_declaration = vim.trim(ts_utils.get_node_text(current_node)[1]):gsub("func .*\\s.*", "")
-  local idx, _ =  string.find(method_declaration, ")")
+  local idx, _ = string.find(method_declaration, ")")
   if idx == nil then
     return
   end
