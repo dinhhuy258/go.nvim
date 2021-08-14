@@ -14,7 +14,7 @@ local dap_installer = {
 	]],
 }
 
-local dap_config = {
+M.dap_config = {
   adapters = {
     type = "executable",
     command = "node",

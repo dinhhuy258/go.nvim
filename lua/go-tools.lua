@@ -11,6 +11,16 @@ function M.setup()
 
   vim.cmd [[command! GoDapInstall lua require("go-tools.dap").dap_install()]]
   vim.cmd [[command! GoDapUninstall lua require("go-tools.dap").dap_uninstall()]]
+
+  local status_ok, dap = pcall(require, "dap")
+  if not status_ok then
+    return
+  end
+
+  local dap_config = require("go-tools.dap").dap_config
+
+  dap.adapters.go = dap_config.adapters
+  dap.configurations.go = dap_config.configurations
 end
 
 return M
