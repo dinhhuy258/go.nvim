@@ -6,6 +6,7 @@ function M.setup()
   vim.cmd [[command! GoClearTag lua require("go-tools.tags").clear()]]
 
   vim.cmd [[command! GoTest lua require("go-tools.tests").run_test()]]
+  vim.cmd [[command! GoAddTest lua require("go-tools.tests").add_test()]]
 end
 
 return M
