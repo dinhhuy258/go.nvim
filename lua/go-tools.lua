@@ -9,18 +9,11 @@ function M.setup()
   vim.cmd [[command! GoAddTest lua require("go-tools.tests").add_test()]]
   vim.cmd [[command! GoAddTests lua require("go-tools.tests").add_tests()]]
 
-  vim.cmd [[command! GoDapInstall lua require("go-tools.dap").dap_install()]]
-  vim.cmd [[command! GoDapUninstall lua require("go-tools.dap").dap_uninstall()]]
+  vim.cmd [[command! GoInstallDap lua require("go-tools.dap").install()]]
+  vim.cmd [[command! GoUninstallDap lua require("go-tools.dap").uninstall()]]
+  vim.cmd [[command! GoConfigDap lua require("go-tools.dap").config()]]
 
-  local status_ok, dap = pcall(require, "dap")
-  if not status_ok then
-    return
-  end
-
-  local dap_config = require("go-tools.dap").dap_config
-
-  dap.adapters.go = dap_config.adapters
-  dap.configurations.go = dap_config.configurations
+  require("go-tools.dap").config()
 end
 
 return M

@@ -14,7 +14,7 @@ local dap_installer = {
 	]],
 }
 
-M.dap_config = {
+local dap_config = {
   adapters = {
     type = "executable",
     command = "node",
@@ -41,7 +41,17 @@ M.dap_config = {
   },
 }
 
-function M.dap_install()
+function M.config()
+  local status_ok, dap = pcall(require, "dap")
+  if not status_ok then
+    return
+  end
+
+  dap.adapters.go = dap_config.adapters
+  dap.configurations.go = dap_config.configurations
+end
+
+function M.install()
   if vim.fn.confirm("Do you want to install the go debugger?", "&Yes\n&Cancel") ~= 1 then
     return
   end
@@ -70,7 +80,7 @@ function M.dap_install()
   vim.cmd "startinsert"
 end
 
-function M.dap_uninstall()
+function M.uninstall()
   if vim.fn.isdirectory("" .. dbg_path .. "") ~= 1 then
     return
   end
