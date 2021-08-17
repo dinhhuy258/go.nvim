@@ -4,7 +4,7 @@ local DIR_SEP = package.config:sub(1, 1)
 
 local urls = {
   gomodifytags = "github.com/fatih/gomodifytags",
-  gotests = "github.com/cweill/gotests",
+  gotests = "github.com/cweill/gotests/...",
 }
 
 local function is_installed(bin)
