@@ -1,58 +1,69 @@
 local ts_utils = require "nvim-treesitter.ts_utils"
+local ts_query = require "nvim-treesitter.query"
+local parsers = require "nvim-treesitter.parsers"
+local locals = require "nvim-treesitter.locals"
 
 local M = {}
 
-local function get_node_at_cursor()
-  local cursor = vim.api.nvim_win_get_cursor(0)
-  local cursor_range = { cursor[1] - 1, 32 } -- Hack to set col to 32
-  local root = ts_utils.get_root_for_position(unpack(cursor_range))
-  if not root then
-    return
+local query_func = [[((function_declaration name: (identifier)@function.name) @function.declaration)]]
+local query_method_name =
+  [[((method_declaration receiver: (parameter_list)@method.receiver name: (field_identifier)@method.name body:(block))@method.declaration)]]
+local query_struct_block =
+  [[((type_declaration (type_spec name:(type_identifier) @struct.name type: (struct_type)))@struct.declaration)]]
+local query_em_struct_block =
+  [[(field_declaration name:(field_identifier)@struct.name type: (struct_type)) @struct.declaration]]
+
+local function get_current_node(query)
+  local row, _ = unpack(vim.api.nvim_win_get_cursor(0))
+  local bufnr = vim.api.nvim_get_current_buf()
+
+  local ft = vim.api.nvim_buf_get_option(bufnr, "ft")
+
+  local success, parsed_query = pcall(function()
+    return vim.treesitter.parse_query(ft, query)
+  end)
+  if not success then
+    return nil
   end
 
-  return root:named_descendant_for_range(cursor_range[1], cursor_range[2], cursor_range[1], cursor_range[2])
-end
+  local parser = parsers.get_parser(bufnr, ft)
+  local root = parser:parse()[1]:root()
+  local start_row, _, end_row, _ = root:range()
+  for match in ts_query.iter_prepared_matches(parsed_query, root, bufnr, start_row, end_row) do
+    local sRow, eRow
+    local declaration_node
+    local name = ""
+    local op = ""
 
-local function get_current_node(type)
-  local current_node = get_node_at_cursor()
+    locals.recurse_local_nodes(match, function(_, node, path)
+      local idx = string.find(path, ".[^.]*$") -- find last .
+      op = string.sub(path, idx + 1, #path)
+      if op == "name" then
+        name = ts_utils.get_node_text(node, bufnr)[1]
+      elseif op == "declaration" or op == "clause" then
+        declaration_node = node
+        sRow, _, eRow, _ = node:range()
+        sRow = sRow + 1
+        eRow = eRow + 1
+      end
+    end)
 
-  while current_node do
-    if current_node:type() == type then
-      break
+    if declaration_node ~= nil then
+      if sRow <= row and eRow >= row then
+        return name
+      end
     end
-    current_node = current_node:parent()
   end
 
-  return current_node
+  return nil
 end
 
 function M.get_current_struct()
-  local current_node = get_current_node "struct_type"
-
-  if current_node then
-    return vim.trim(ts_utils.get_node_text(current_node:parent())[1]):gmatch "%w+"()
-  end
+  return get_current_node(query_struct_block .. " " .. query_em_struct_block)
 end
 
 function M.get_current_function()
-  local current_node = get_current_node "function_declaration"
-
-  if current_node then
-    return vim.trim(ts_utils.get_node_text(current_node)[1]):gsub("func ", ""):gmatch "%w+"()
-  end
-
-  current_node = get_current_node "method_declaration"
-  if current_node == nil then
-    return
-  end
-
-  local method_declaration = vim.trim(ts_utils.get_node_text(current_node)[1]):gsub("func .*\\s.*", "")
-  local idx, _ = string.find(method_declaration, ")")
-  if idx == nil then
-    return
-  end
-
-  return vim.trim(string.sub(method_declaration, idx + 1)):gmatch "%w+"()
+  return get_current_node(query_func .. " " .. query_method_name)
 end
 
 return M
