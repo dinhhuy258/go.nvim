@@ -18,6 +18,9 @@ function M.setup()
   vim.cmd [[command! GoDebugStop lua require("go-tools.dap").stop()]]
   vim.cmd [[command! GoDebugTest lua require("go-tools.dap").run('test')]]
 
+  vim.cmd [[command! -nargs=* GoMake lua require("go-tools.cmd").cmd('make', <f-args>)]]
+  vim.cmd [[command! -nargs=* Go lua require("go-tools.cmd").cmd('go', <f-args>)]]
+
   require("go-tools.dap").config()
 end
 
