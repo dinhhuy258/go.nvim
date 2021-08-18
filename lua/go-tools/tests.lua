@@ -54,4 +54,15 @@ function M.run_test()
   vim.cmd(cmd)
 end
 
+function M.run_tests()
+  local fpath = vim.fn.expand "%:p"
+  local cmd = [[setl makeprg=go\ test\ -v\ -run\ ^]]
+    .. [[\ ]]
+    .. fpath
+    .. [[ | lua require"go-tools.async_make".make() ]]
+
+  vim.notify("Run test: " .. fpath)
+  vim.cmd(cmd)
+end
+
 return M
