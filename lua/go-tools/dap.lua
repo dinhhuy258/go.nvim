@@ -1,3 +1,5 @@
+local utils = require "go-tools.utils"
+
 local M = {}
 
 local installation_path = vim.fn.stdpath "data" .. "/dapinstall/"
@@ -90,7 +92,7 @@ function M.uninstall()
   end
 
   vim.fn.delete("" .. dbg_path .. "", "rf")
-  vim.notify "Successfully uninstalled the go debugger!"
+  utils.log "Successfully uninstalled the go debugger!"
 end
 
 function M.run(mode)

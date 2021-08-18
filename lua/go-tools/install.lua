@@ -1,3 +1,5 @@
+local utils = require "go-tools.utils"
+
 local M = {}
 
 local DIR_SEP = package.config:sub(1, 1)
@@ -21,21 +23,21 @@ end
 local function go_install(bin)
   local url = urls[bin]
   if url == nil then
-    vim.notify("Command " .. bin .. " not supported")
+    utils.log("Command " .. bin .. " not supported")
     return
   end
 
   url = url .. "@latest"
   vim.fn.jobstart({ "go", "install", url }, {
     on_stdout = function(_, data, _)
-      vim.notify(data)
+      utils.log(data)
     end,
   })
 end
 
 function M.install(bin)
   if not is_installed(bin) then
-    vim.notify("Installing " .. bin .. "...")
+    utils.log("Installing " .. bin .. "...")
     go_install(bin)
   end
 end

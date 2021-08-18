@@ -1,3 +1,5 @@
+local utils = require "go-tools.utils"
+
 local M = {}
 
 local gomodify = "gomodifytags"
@@ -8,7 +10,7 @@ local function modify(...)
   local fname = vim.fn.expand "%"
   local struct_name = require("go-tools.utils.treesitter").get_current_struct()
   if not struct_name then
-    vim.notify "Struct not found"
+    utils.log "Struct not found"
     return
   end
 
@@ -32,7 +34,7 @@ local function modify(...)
       local tagged = vim.fn.json_decode(data)
 
       if tagged.errors ~= nil or tagged.lines == nil or tagged["start"] == nil or tagged["start"] == 0 then
-        vim.notify("Failed to set tags" .. vim.inspect(tagged))
+        utils.log("Failed to set tags" .. vim.inspect(tagged))
       end
       vim.api.nvim_buf_set_lines(0, tagged["start"] - 1, tagged["start"] - 1 + #tagged.lines, false, tagged.lines)
       vim.cmd "write"

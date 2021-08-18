@@ -1,3 +1,5 @@
+local utils = require "go-tools.utils"
+
 local M = {}
 
 local gotests = "gotests"
@@ -7,10 +9,10 @@ local function run_gotests(cmd)
 
   vim.fn.jobstart(cmd, {
     on_stdout = function(_, _, _)
-      vim.notify "Unit tests was generated"
+      utils.log "Unit tests was generated"
     end,
     on_stderr = function(_, _, _)
-      vim.notify "Failed to generate unit tests"
+      utils.log "to generate unit tests"
     end,
   })
 end
@@ -18,7 +20,7 @@ end
 function M.add_test()
   local function_name = require("go-tools.utils.treesitter").get_current_function()
   if not function_name then
-    vim.notify "Function not found"
+    utils.log "Function not found"
     return
   end
 
@@ -39,7 +41,7 @@ function M.run_test()
   local function_name = require("go-tools.utils.treesitter").get_current_function()
 
   if not function_name then
-    vim.notify "Function not found"
+    utils.log "Function not found"
     return
   end
 
@@ -50,7 +52,7 @@ function M.run_test()
     .. fpath
     .. [[ | lua require"go-tools.async_make".make() ]]
 
-  vim.notify("Run test: " .. function_name)
+  utils.log("Run test: " .. function_name)
   vim.cmd(cmd)
 end
 
@@ -61,7 +63,7 @@ function M.run_tests()
     .. fpath
     .. [[ | lua require"go-tools.async_make".make() ]]
 
-  vim.notify("Run test: " .. fpath)
+  utils.log("Run test: " .. fpath)
   vim.cmd(cmd)
 end
 
