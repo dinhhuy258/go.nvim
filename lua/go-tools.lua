@@ -13,6 +13,10 @@ function M.setup()
   vim.cmd [[command! GoUninstallDap lua require("go-tools.dap").uninstall()]]
   vim.cmd [[command! GoConfigDap lua require("go-tools.dap").config()]]
 
+  vim.cmd [[command! GoDebugStart lua require("go-tools.dap").run()]]
+  vim.cmd [[command! GoDebugStop lua require("go-tools.dap").stop()]]
+  vim.cmd [[command! GoDebugTest lua require("go-tools.dap").run('test')]]
+
   require("go-tools.dap").config()
 end
 

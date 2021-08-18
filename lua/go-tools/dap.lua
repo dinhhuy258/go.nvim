@@ -93,4 +93,26 @@ function M.uninstall()
   vim.notify "Successfully uninstalled the go debugger!"
 end
 
+function M.run(mode)
+  local status_ok, dap = pcall(require, "dap")
+  if not status_ok then
+    return
+  end
+
+  if mode == "test" then
+    dap.run(dap_config.configurations[2]) -- Test mode is in index 2
+  else
+    dap.run(dap_config.configurations[1]) -- Non test mode is in index 1
+  end
+end
+
+function M.stop()
+  local status_ok, dap = pcall(require, "dap")
+  if not status_ok then
+    return
+  end
+
+  dap.disconnect()
+end
+
 return M
