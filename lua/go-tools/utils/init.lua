@@ -4,6 +4,10 @@ function M.log(message)
   vim.notify("[go-tools] " .. message)
 end
 
+function M.is_test_file(fpath)
+  return fpath:sub(-string.len("_test.go")) == "_test.go"
+end
+
 M.handle_job_data = function(data)
   if not data then
     return nil

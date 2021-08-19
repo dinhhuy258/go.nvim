@@ -12,7 +12,7 @@ local function run_gotests(cmd)
       utils.log "Unit tests was generated"
     end,
     on_stderr = function(_, _, _)
-      utils.log "to generate unit tests"
+      utils.log "Failed to generate unit tests"
     end,
   })
 end
@@ -38,14 +38,18 @@ function M.add_tests()
 end
 
 function M.run_test()
-  local function_name = require("go-tools.utils.treesitter").get_current_function()
-
-  if not function_name then
-    utils.log "Function not found"
+  local fpath = vim.fn.expand "%:p:h"
+  if not utils.is_test_file(fpath) then
+    utils.log "No tests found. Current file is not a test file."
     return
   end
 
-  local fpath = vim.fn.expand "%:p:h"
+  local function_name = require("go-tools.utils.treesitter").get_current_function()
+  if not function_name then
+    utils.log "Not test function found"
+    return
+  end
+
   local cmd = [[setl makeprg=go\ test\ -v\ -run\ ^]]
     .. function_name
     .. [[\ ]]
@@ -58,6 +62,11 @@ end
 
 function M.run_tests()
   local fpath = vim.fn.expand "%:p"
+  if not utils.is_test_file(fpath) then
+    utils.log "No tests found. Current file is not a test file."
+    return
+  end
+
   local cmd = [[setl makeprg=go\ test\ -v\ -run\ ^]]
     .. [[\ ]]
     .. fpath
