@@ -21,6 +21,8 @@ function M.setup()
   vim.cmd [[command! -nargs=* GoMake lua require("go-tools.cmd").cmd('make', <f-args>)]]
   vim.cmd [[command! -nargs=* Go lua require("go-tools.cmd").cmd('go', <f-args>)]]
 
+  vim.cmd [[command! GoSwitch lua require("go-tools.switch").switch()]]
+
   require("go-tools.dap").config()
 end
 
