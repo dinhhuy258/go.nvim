@@ -109,12 +109,17 @@ function M.run(mode)
 end
 
 function M.stop()
-  local status_ok, dap = pcall(require, "dap")
-  if not status_ok then
-    return
+  local dap_ok, dap = pcall(require, "dap")
+  if dap_ok then
+    dap.disconnect()
+    dap.close()
+    dap.repl.close()
   end
 
-  dap.disconnect()
+  local dapui_ok, dapui = pcall(require, "dapui")
+  if dapui_ok then
+    dapui.close()
+  end
 end
 
 return M
