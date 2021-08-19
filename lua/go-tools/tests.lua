@@ -49,14 +49,8 @@ function M.run_test()
     return
   end
 
-  local cmd = [[setl makeprg=go\ test\ -v\ -run\ ^]]
-    .. function_name
-    .. [[\ ]]
-    .. vim.fn.expand "%:p:h"
-    .. [[ | lua require"go-tools.async_make".make() ]]
-
   utils.log("Run test: " .. function_name)
-  vim.cmd(cmd)
+  require("go-tools.cmd").cmd("go", "test -v -run ^" .. function_name .. " " .. vim.fn.expand "%:p:h")
 end
 
 function M.run_tests()
@@ -66,13 +60,8 @@ function M.run_tests()
     return
   end
 
-  local cmd = [[setl makeprg=go\ test\ -v\ -run\ ^]]
-    .. [[\ ]]
-    .. fpath
-    .. [[ | lua require"go-tools.async_make".make() ]]
-
   utils.log("Run test: " .. fpath)
-  vim.cmd(cmd)
+  require("go-tools.cmd").cmd("go", "test -v -run ^ " .. fpath)
 end
 
 return M
