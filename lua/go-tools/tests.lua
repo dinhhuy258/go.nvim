@@ -38,8 +38,7 @@ function M.add_tests()
 end
 
 function M.run_test()
-  local fpath = vim.fn.expand "%:p:h"
-  if not utils.is_test_file(fpath) then
+  if not utils.is_test_file(vim.fn.expand "%:p") then
     utils.log "No tests found. Current file is not a test file."
     return
   end
@@ -53,7 +52,7 @@ function M.run_test()
   local cmd = [[setl makeprg=go\ test\ -v\ -run\ ^]]
     .. function_name
     .. [[\ ]]
-    .. fpath
+    .. vim.fn.expand "%:p:h"
     .. [[ | lua require"go-tools.async_make".make() ]]
 
   utils.log("Run test: " .. function_name)
