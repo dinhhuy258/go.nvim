@@ -1,9 +1,9 @@
 local M = {}
 
 function M.setup()
-  vim.cmd [[command! -nargs=* GoTagsAdd lua require("go-tools.tags").add(<f-args>)]]
-  vim.cmd [[command! -nargs=* GoTagsRm lua require("go-tools.tags").remove(<f-args>)]]
-  vim.cmd [[command! GoTagsClear lua require("go-tools.tags").clear()]]
+  vim.cmd [[command! -nargs=* GoAddTags lua require("go-tools.tags").add(<f-args>)]]
+  vim.cmd [[command! -nargs=* GoRemoveTags lua require("go-tools.tags").remove(<f-args>)]]
+  vim.cmd [[command! GoClarTags lua require("go-tools.tags").clear()]]
 
   vim.cmd [[command! GoTest lua require("go-tools.tests").run_test()]]
   vim.cmd [[command! GoTests lua require("go-tools.tests").run_tests()]]

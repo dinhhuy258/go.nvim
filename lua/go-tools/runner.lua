@@ -20,7 +20,7 @@ local function is_installed(bin)
   return false
 end
 
-local function go_install(bin)
+local function go_install(bin, runnable)
   local url = urls[bin]
   if url == nil then
     utils.log("Command " .. bin .. " not supported")
@@ -29,16 +29,26 @@ local function go_install(bin)
 
   url = url .. "@latest"
   vim.fn.jobstart({ "go", "install", url }, {
-    on_stdout = function(_, data, _)
-      utils.log(data)
+    -- FIXME: Do we need to check the status of bin installation
+    on_exit = function(_, _, _)
+      utils.log(bin .. " has been installed")
+      runnable()
     end,
   })
 end
 
-function M.install(bin)
+local function install(bin, runnable)
   if not is_installed(bin) then
     utils.log("Installing " .. bin .. "...")
-    go_install(bin)
+    go_install(bin, runnable)
+  end
+end
+
+function M.run(bin, runnable)
+  if not is_installed(bin) then
+    install(bin, runnable)
+  else
+    runnable()
   end
 end
 

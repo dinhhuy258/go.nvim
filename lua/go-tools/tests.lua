@@ -5,16 +5,16 @@ local M = {}
 local gotests = "gotests"
 
 local function run_gotests(cmd)
-  require("go-tools.install").install(gotests)
-
-  vim.fn.jobstart(cmd, {
-    on_stdout = function(_, _, _)
-      utils.log "Unit tests was generated"
-    end,
-    on_stderr = function(_, _, _)
-      utils.log "Failed to generate unit tests"
-    end,
-  })
+  require("go-tools.runner").run(gotests, function()
+    vim.fn.jobstart(cmd, {
+      on_stdout = function(_, _, _)
+        utils.log "Unit tests was generated"
+      end,
+      on_stderr = function(_, _, _)
+        utils.log "Failed to generate unit tests"
+      end,
+    })
+  end)
 end
 
 function M.add_test()
