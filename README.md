@@ -24,25 +24,27 @@ Not support, you can use LSP
 
 ### Code Navigation
 
-- Toggle between code and tests with `:GoSwitch` command
+- Toggle between code and tests with `:GoSwitch`
 
 ### Code Editing
 
-- Format the code with `:GoFormat` command
+- Format the code with `:GoFormat`
 
 ### Code Generation
 
-- Add or remove struct tags with `:GoAddTags`,  `:GoRemoveTags` and `GoClearTag` commands
-- Generate unit tests with `:GoAddTest` and `:GoAddTests` commands
+- Add or remove struct tags with `:GoAddTags`, `:GoRemoveTags` and `GoClearTag`
+- Generate unit tests for  current function `GoAddTest`
+- Gererate unit tests for current file `GoAddTests`
 
 ### Run tests
 
-- Run tests with `:GoTest` and `:GoTests` commands
+- Run single unit test for current function `:GoTest`
+- Run all tests for current file `:GoTests`
 
 ### Debug
 
-- Start debugger using `:GoDebugStart` command
-- Start debugger using `:GoDebugStop` command
+- Start debugger using `:GoDebugStart`
+- Stop debugger using `:GoDebugStop`
 
 ### Command
 
