@@ -9,7 +9,7 @@ function M.setup(common_on_attach, common_capabilities, common_on_init)
 
   lspconfig.gopls.setup {
     cmd = {
-      vim.fn.stdpath "data" .. "/lspinstall/go/gopls",
+      vim.fn.stdpath "data" .. "/lsp_servers/go/gopls",
     },
     on_attach = common_on_attach,
     on_init = common_on_init,
