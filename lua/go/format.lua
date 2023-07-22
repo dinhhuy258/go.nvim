@@ -1,5 +1,5 @@
-local utils = require "go-tools.utils"
-local runner = require "go-tools.runner"
+local utils = require "go.utils"
+local runner = require "go.runner"
 
 local M = {}
 

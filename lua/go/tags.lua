@@ -1,4 +1,4 @@
-local utils = require "go-tools.utils"
+local utils = require "go.utils"
 
 local M = {}
 
@@ -6,7 +6,7 @@ local gomodifytags = "gomodifytags"
 
 local function modify(...)
   local fname = vim.fn.expand "%"
-  local struct_name = require("go-tools.utils.treesitter").get_current_struct()
+  local struct_name = require("go.utils.treesitter").get_current_struct()
   if not struct_name then
     utils.log "Struct not found"
     return
@@ -23,10 +23,10 @@ local function modify(...)
     table.insert(cmd, "json")
   end
 
-  require("go-tools.runner").run(gomodifytags, function()
+  require("go.runner").run(gomodifytags, function()
     vim.fn.jobstart(cmd, {
       on_stdout = function(_, data, _)
-        data = require("go-tools.utils").handle_job_data(data)
+        data = require("go.utils").handle_job_data(data)
         if not data then
           return
         end

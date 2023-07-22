@@ -1,4 +1,4 @@
-# go-tools.nvim
+# go.nvim
 
 A tiny plugin for Neovim Golang development written in Lua. This plugin is for personal purpose only, most of the code was copied from [go.nvim](https://github.com/ray-x/go.nvim) plugin.
 
@@ -7,7 +7,7 @@ A tiny plugin for Neovim Golang development written in Lua. This plugin is for p
 Using vim plug
 
 ```sh
-Plug 'dinhhuy258/go-tools.nvim'
+Plug 'dinhhuy258/go.nvim'
 ```
 
 ## Requirements

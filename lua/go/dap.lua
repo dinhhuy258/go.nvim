@@ -1,4 +1,4 @@
-local utils = require "go-tools.utils"
+local utils = require "go.utils"
 
 local M = {}
 

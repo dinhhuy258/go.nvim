@@ -1,7 +1,7 @@
 local M = {}
 
 function M.log(message)
-  vim.notify("[go-tools] " .. message)
+  vim.notify("[go.nvim] " .. message)
 end
 
 function M.is_test_file(file)

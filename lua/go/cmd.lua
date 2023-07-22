@@ -1,4 +1,4 @@
-local utils = require "go-tools.utils"
+local utils = require "go.utils"
 
 local M = {}
 
@@ -25,7 +25,7 @@ local function create_cmd_win()
     silent = true,
     expr = false,
   }
-  vim.api.nvim_buf_set_keymap(0, "n", "<CR>", "<CMD>lua require('go-tools.cmd').close()<CR>", options)
+  vim.api.nvim_buf_set_keymap(0, "n", "<CR>", "<CMD>lua require('go.cmd').close()<CR>", options)
 end
 
 function M.close()

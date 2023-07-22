@@ -1,5 +1,5 @@
-local utils = require "go-tools.utils"
-local dap = require "go-tools.dap"
+local utils = require "go.utils"
+local dap = require "go.dap"
 
 local M = {}
 

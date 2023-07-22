@@ -1,11 +1,11 @@
-local utils = require "go-tools.utils"
+local utils = require "go.utils"
 
 local M = {}
 
 local gotests = "gotests"
 
 local function run_gotests(cmd)
-  require("go-tools.runner").run(gotests, function()
+  require("go.runner").run(gotests, function()
     vim.fn.jobstart(cmd, {
       on_stdout = function(_, _, _)
         utils.log "Unit tests was generated"
@@ -18,7 +18,7 @@ local function run_gotests(cmd)
 end
 
 function M.add_test()
-  local function_name = require("go-tools.utils.treesitter").get_current_function()
+  local function_name = require("go.utils.treesitter").get_current_function()
   if not function_name then
     utils.log "Function not found"
     return
@@ -43,14 +43,14 @@ function M.run_test()
     return
   end
 
-  local function_name = require("go-tools.utils.treesitter").get_current_function()
+  local function_name = require("go.utils.treesitter").get_current_function()
   if not function_name then
     utils.log "Not test function found"
     return
   end
 
   utils.log("Run test: " .. function_name)
-  require("go-tools.cmd").cmd("go", "test -v -run ^" .. function_name .. " " .. vim.fn.expand "%:p:h")
+  require("go.cmd").cmd("go", "test -v -run ^" .. function_name .. " " .. vim.fn.expand "%:p:h")
 end
 
 function M.run_tests()
@@ -61,7 +61,7 @@ function M.run_tests()
   end
 
   utils.log("Run test: " .. fpath)
-  require("go-tools.cmd").cmd("go", "test -v -run ^ " .. fpath)
+  require("go.cmd").cmd("go", "test -v -run ^ " .. fpath)
 end
 
 return M
