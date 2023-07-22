@@ -9,6 +9,7 @@ local urls = {
   gotests = "github.com/cweill/gotests/...",
   gofumpt = "mvdan.cc/gofumpt",
   golines = "github.com/segmentio/golines",
+  dlv = "github.com/go-delve/delve/cmd/dlv",
 }
 
 local function is_installed(bin)
@@ -39,16 +40,18 @@ local function go_install(bin, runnable)
   })
 end
 
-local function install(bin, runnable)
+function M.install(bin, runnable)
   if not is_installed(bin) then
     utils.log("Installing " .. bin .. "...")
     go_install(bin, runnable)
+  else
+    utils.log(bin .. " is already installed")
   end
 end
 
 function M.run(bin, runnable)
   if not is_installed(bin) then
-    install(bin, runnable)
+    M.install(bin, runnable)
   else
     runnable()
   end
