@@ -1,6 +1,10 @@
+local config = require "go.config"
+
 local M = {}
 
-function M.setup()
+function M.setup(opts)
+  config.setup(opts)
+
   vim.cmd [[command! -nargs=* GoAddTags lua require("go.tags").add(<f-args>)]]
   vim.cmd [[command! -nargs=* GoRemoveTags lua require("go.tags").remove(<f-args>)]]
   vim.cmd [[command! GoClearTags lua require("go.tags").clear()]]
@@ -12,7 +16,6 @@ function M.setup()
 
   vim.cmd [[command! GoDapInstall lua require("go.dap").install()]]
 
-  vim.cmd [[command! GoDebugStart lua require("go.debug").start()]]
   vim.cmd [[command! GoDebugStop lua require("go.debug").stop()]]
 
   vim.cmd [[command! -nargs=* GoMake lua require("go.cmd").cmd('make', <f-args>)]]

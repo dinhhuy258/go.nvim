@@ -1,28 +1,7 @@
+local config = require "go.config"
 local runner = require "go.runner"
 
 local M = {}
-
-local dap_config = {
-  configurations = {
-    {
-      type = "go",
-      name = "Debug",
-      request = "launch",
-      showLog = false,
-      program = "${file}",
-      dlvToolPath = vim.fn.exepath "dlv",
-    },
-    {
-      type = "go",
-      name = "Debug test",
-      request = "launch",
-      showLog = false,
-      mode = "test",
-      program = "${file}",
-      dlvToolPath = vim.fn.exepath "dlv",
-    },
-  },
-}
 
 function M.config()
   local status_ok, dap = pcall(require, "dap")
@@ -42,30 +21,18 @@ function M.config()
       args = args,
     },
     options = {
-      initialize_timeout_sec = 10,
+      initialize_timeout_sec = config.opts.dap.timeout,
+      max_retries = config.opts.dap.retries,
     },
   }
 
-  dap.configurations.go = dap_config.configurations
+  dap.configurations.go = config.opts.dap.configurations
 end
 
 function M.install()
   runner.install("dlv", function()
     -- empty function
   end)
-end
-
-function M.run(mode)
-  local status_ok, dap = pcall(require, "dap")
-  if not status_ok then
-    return
-  end
-
-  if mode == "test" then
-    dap.run(dap_config.configurations[2]) -- Test mode is in index 2
-  else
-    dap.run(dap_config.configurations[1]) -- Non test mode is in index 1
-  end
 end
 
 function M.stop()
