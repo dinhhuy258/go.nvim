@@ -20,7 +20,7 @@ local function get_current_node(query)
   local ft = vim.api.nvim_buf_get_option(bufnr, "ft")
 
   local success, parsed_query = pcall(function()
-    return vim.treesitter.parse_query(ft, query)
+    return vim.treesitter.query.parse(ft, query)
   end)
   if not success then
     return nil
